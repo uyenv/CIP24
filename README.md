@@ -6,5 +6,5 @@ Those would include:
 - Console 
 - Graphics
   
-The animation submodule in the 7th week would be added as ani.<name>.py
+The animation submodule in the 7th week would be added as ani.</name>/.py
 These mini projects would be in the main branch since they conclude the whole three topics 
