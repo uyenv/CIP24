@@ -4,4 +4,4 @@ Those would include:
 - Karel
 - Python
 - Graphics
-  +The animation submodule would be added as ani.<name>.py
+
