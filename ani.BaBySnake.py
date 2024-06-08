@@ -1,3 +1,9 @@
+"""
+I was quite (too) tired from hours of fixing bugs to change the var names for easier understanding pls excuse them
+And there's one feature missing which I'll (probably) add soon was to add some conditions to the generate_goal func
+so it would not appear in the text regions
+"""
+
 from graphics import Canvas
 import time
 import random
@@ -17,7 +23,7 @@ def main():
     set up a direction variable so I can repeatedly
     move player in the old direction before a new key was pressed
     """
-    direction = None #This prevents the direction from being reset to None every while iteration.
+    direction = None #Define direction out of the while scope prevents it from being reset to None every iteration.
     
     #1.Set up the goal (red rectangle)
     """
@@ -106,7 +112,7 @@ def main():
             current_x + SIZE,
             current_y + SIZE
         )
-        print("Overlapping Objects: ", overlapping_objs)
+
         """
         In this example, after printing out the overlapping_objs list
         the player was shape_3
