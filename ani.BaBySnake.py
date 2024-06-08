@@ -46,23 +46,17 @@ def main():
 
     player = canvas.create_rectangle(left_x, top_y, right_x, bottom_y, 'blue')
 
-    """
-    idk if this is right or wrong so just keeping it there
-
-    #Set up an auto start up point for player
-    In the beginning of the game, if player hasn't press any key
-    player's blue square will automatically move in the right direction
-    while canvas.get_last_key_press() is None:
-        canvas.move(player, VELOCITY, 0)
-        time.sleep(DELAY)
-        if canvas.get_last_key_press():
-            break
-    """
-
     while True:
         #Handle key press
         key = canvas.get_last_key_press()
+
         if key is None:
+        """
+        In the beginning of the game, if player hasn't press any key
+        player's blue square will automatically move in the right direction
+
+        if the key was pressed before (aka direction was set), the snake will proceed to move in the same direction
+        """
             if direction is None or direction == 'right':
                 canvas.move(player, VELOCITY, 0)
             if direction == 'down':
@@ -71,6 +65,7 @@ def main():
                 canvas.move(player, 0, -VELOCITY)
             if direction == 'left':
                 canvas.move(player, -VELOCITY, 0)
+                
         if key == 'ArrowLeft':
             direction = 'left'
             canvas.move(player, -VELOCITY, 0)
