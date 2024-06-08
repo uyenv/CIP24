@@ -106,24 +106,23 @@ def main():
             current_x + SIZE,
             current_y + SIZE
         )
-
+        print("Overlapping Objects: ", overlapping_objs)
         """
         In this example, after printing out the overlapping_objs list
-        the player was shape_1
-        So anything not shape_1 overlapping with snake will be the goals
+        the player was shape_3
+        So anything not shape_3 overlapping with snake will be the goals
         """
-        for overlapping_obj in overlapping_objs:
+        for i in range (0, len(overlapping_objs)):
             """
-            if the value in the list wasn't player (shape_1) itself
+            if the value in the list wasn't player (shape_3) itself
                 1. Delete the current goal
                 2. Generate a new goal
             """
-            #if overlapping_obj != 'shape_1' and overlapping_obj != ate_count_text and overlapping_obj != ate_text:
-                #canvas.delete(overlapping_obj)
-                #generate_goal(canvas, random.choice(goals), random.choice(goals))
-
-        #Create a point count system
-
+            if overlapping_objs[i] != 'shape_3' and overlapping_objs[i] != ate_count_text and overlapping_objs[i] != ate_text:
+                canvas.delete(overlapping_objs[i])
+                generate_goal(canvas, random.choice(goals), random.choice(goals))
+                ate_count += 1
+                ate_count_text = update_count_text(canvas, ate_count_text, ate_count)
 
         #End game condition
         if (current_x > CANVAS_WIDTH) or (current_y > CANVAS_HEIGHT) or (current_x < 0) or (current_y < 0):
@@ -140,6 +139,17 @@ def generate_goal(canvas, goal_left_x, goal_top_y):
         goal_top_y + SIZE,
         'red'
     )
+
+def update_count_text(canvas, old_text, new_value):
+    canvas.delete(old_text)
+    new_text = canvas.create_text(
+        3.8*SIZE,
+        CANVAS_HEIGHT - 1.5*SIZE,
+        font_size = 30,
+        text = str(new_value),
+        color = 'green'
+    )
+    return new_text
 
 if __name__ == "__main__":
     main()
