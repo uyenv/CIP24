@@ -1,0 +1,37 @@
+Excuse the messiness in here, my ideas were kinda...
+Anyway, just keeping it here so in case my dear 9-year-old Dell laptop trips and falls then end up deleted all important files (again)
+
+Here are some of the hard milestones I should consider in this little game. I'm thinking about anime music for fellow weebs like me to vibe with:
+**The welcome opening(make this last):
+**The game on(make this first):
+- 4 Karels will be animated vertically towards y—until it reaches the static Karel. 
+- Print Value”” everytime player hit the key.
+- A variable to count 4 different values:
+	+Exellent: Where dynamic Karel will reach right on static Karel
+	+Good: Around +-5 pixels around Karel
+	+Almost there: Around +- 10 px to static Karel
+	+Miss: y of dynamic Karel + 20 px and upto more > y of static Karel
+Milestone:
+[1].	Appear background
+[2].	Appear 4 static Karel
+[3].	Make random 1 Karel move vertically (create a list where it exists the 4 x and 4y of the static Karels)
+[4].	Handle key press, if key was pressed, that moving Karel will disappear. (Condition: if the moving karel surpass the static one/ if one button was pressed)
+a.	There are these possibilites:
+-	Press the right button: E/G/A
+-	Press the wrong button: M
+-	Don’t press: M
+[5].	Score count system. Appear the score on screen(Condition: if the moving karel surpass the static one/ if one button was pressed)
+**The end goodbye(make this second):
+-	4 values counted will be shown onto the screen as texts:
++”The audition has finished”
++”Here’s your result:”
+
+-	Print a string of personality based result:
++ Consists of all 4 values and Ex >= 3: You’re making progress here my friend, you have tried so hard! Karel is proud of you <3
++ Consists of Ex: A pro gamer fr, no cap <3
++Doesn’t consist Miss: You’re doing as best as you can now my friend, respect <3
++Else: You’ve been trying your best and Karel knows that <3
+**The background music: 
+- The first one was at the beginning of the song where the welcome screen will be shown.(Some piano theme of an opening)
+- The second one was a rock theme for when the game was being played.
+- The third one was for the ending theme where the player's results will be shown on the screen.  
