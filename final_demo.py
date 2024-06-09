@@ -2,7 +2,7 @@
 This is just a plain source for me to look back on in case my laptop shut down mid coding, further explanations 
 will be included whenever my project was finished
 This mini game is called Karel Dance Audition
-**I coded this on Stanford CIP IDE, so if you want to pull down and see the results on your IDE EX VSCode,
+**I coded this on Stanford CIP IDE, so if you want to pull down and see the results on your IDE for example VSCode or Pycharm,
 you'll have to add something like 'canvas.update()' or 'canvas.mainloop' though. 
 """
 from graphics import Canvas
