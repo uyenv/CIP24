@@ -5,6 +5,10 @@ This mini-game is called Karel Dance Audition where player will press AWSD to sc
 **I coded this on Stanford CIP IDE, so if you want to pull down and see the results on your IDE for example VSCode or Pycharm,
 you'll have to add something like 'canvas.update()' or 'canvas.mainloop' though. 
 """
+"""
+    Bug: Animation khong chay
+    Bug: Handle key press chua hoan thanh
+"""
 from graphics import Canvas
 import random
 import time
@@ -14,16 +18,20 @@ CANVAS_HEIGHT = 500
 
 KAREL_SIZE = 100
 SPACE = 70 #Relative space amongst static Karels
+
 #Coordinates of static Karels
 LEFT_X = SPACE/2
 UP_X = (SPACE/2 + KAREL_SIZE + SPACE + 5)
 DOWN_X = (SPACE/2 + KAREL_SIZE + SPACE + KAREL_SIZE + SPACE - 5)
 RIGHT_X = (CANVAS_WIDTH - KAREL_SIZE - SPACE/2)
 STATIC_Y = 20
+
 #Coordinates of moving Karels
 MOVING_Xs= [LEFT_X, UP_X, DOWN_X, RIGHT_X] 
 MOVING_Y = CANVAS_HEIGHT - KAREL_SIZE #Karel will move from bellow the screen (for natural purposes lol)
+
 VEL = 7
+
 DELAY = 1/(10**2)
 
 def main():
@@ -37,40 +45,56 @@ def main():
     """
     current_x = random.choice(MOVING_Xs)
     current_y = CANVAS_HEIGHT - KAREL_SIZE #Karel will move from bellow (for natural purposes lol)
+
     #Examine which Karel was generated from the random method
     moving_karel = generate_moving_karel(canvas, current_x, current_y) 
-    supposed_key_to_press = which_moving_karel(current_x) 
+    right_key = which_moving_karel(current_x)
+    karel_present = True 
 
-    while (current_y > 0):
-        #update 
+    """
+    - Make a method deciding if the pressed key was the right one
+    - If not, moving Karel proceeds to move until the end of the world (where current_y < 0) => Done
+    TODO - If player pressed the right key, delete the moving Karel => Sometimes???
+    TODO - If player misses the whole moving_karel, 
+            after the current while loop, check the karel_present method
+            goal: delete moving Karel when Karel has reached the end of the word
+    """
+
+    while True:
+        #Animation
         current_y -= VEL
         canvas.moveto(moving_karel, current_x, current_y)
         time.sleep(DELAY)
 
         #handle key press
         key_pressed = canvas.get_last_key_press()
-        """
-        TODO:
-        - Make a method deciding if the pressed key was the right one
-            - If not, moving Karel proceeds to move 
-            - If is, delete the moving Karel
-            - If player misses the whole moving_karel, 
-                after the current while loop, check the moving_karel_present method
-                delete moving Karel
-        """
-        karel_present = True
-        if key_pressed == supposed_key_to_press:
+        check_right_key(key_pressed, right_key)
+
+    #Player can press multiple keys until it was the right key or until current_y < 0 
+    
+        while key_pressed != right_key:
+            #get new key press and check again
+            key_pressed = canvas.get_last_key_press()
+            if check_right_key:
+                break
+            if (current_y < 0): #When moving_Karel is out of screen
+                if karel_present:
+                    canvas.delete(moving_karel)
+                    break
+
+        if karel_present:
             canvas.delete(moving_karel)
-            karel_present = False
-            break
-        
+            return
 
-    if karel_present:
-        canvas.delete(moving_karel)
+    print("End game")
 
 
 
 
+
+
+def check_right_key(key_pressed, right_key):
+    return key_pressed == right_key
 
 def static_draw(canvas):
     """
@@ -82,6 +106,7 @@ def static_draw(canvas):
         CANVAS_WIDTH, CANVAS_HEIGHT,
         'darkPinkPurple.jpg'
     )
+
     #import static Karels
     left_static = canvas.create_image_with_size(
         LEFT_X, STATIC_Y,
@@ -140,6 +165,8 @@ def which_moving_karel(x):
         return 's'
     if x == RIGHT_X:
         return 'd'
+
+
 
 if __name__ == '__main__':
     main()
