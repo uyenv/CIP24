@@ -15,13 +15,13 @@ OBJECTIVES:
         perfect += 1
     3. Print the text "perfect" on the screen whenever the condition is met
     
-    TODO: Print Perfect whenever the condition is met 
+    TODO: Print whatever the word was passed in the function print_score_condition
+    
     CURRENT MILESTONE: Handle perfect condition
     
     Next's up:
     Make a series of Karel randomly appear on the screen
 """
-
 from graphics import Canvas
 import random
 import time
@@ -47,11 +47,22 @@ VEL = 7
 
 DELAY = 0.005
 
+#The texts appear during counting the score
+PERFECT = 'perfect'
+GOOD = 'good'
+ALMOST_THERE = 'almost there'
+MISS = 'miss'
+FONT_SIZE = 65 
+TEXT_DELAY = 0.3
+CONDITION_X = (CANVAS_WIDTH * 0.35)
+CONDITION_Y = (CANVAS_HEIGHT * 0.43)
+
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
+    #draw static objects on the screen
     static_draw(canvas)
 
-    #generate a random moving Karel from bellow
+    #generate a random moving Karel from bellow the screen
     """
     The conditions of generating a moving Karel don't depent on the Karel itself
     but on each specific Xs of them
@@ -63,44 +74,40 @@ def main():
     moving_karel = generate_moving_karel(canvas, current_x, current_y) 
     right_key = which_moving_karel(current_x)
 
-
     """
-    - Make a method deciding if the pressed key was the right one
-    - If not, moving Karel proceeds to move until the end of the world (where current_y < 0) => Done
-    If player pressed the right key, delete the moving Karel => Done
-    If player misses the whole moving_karel, delete moving Karel when Karel has reached the end of the word => Done
-    """
-
     while True:
         #Animation
         current_y -= VEL
         canvas.moveto(moving_karel, current_x, current_y)
         time.sleep(DELAY)
 
+
+
         #handle key press
         key_pressed = canvas.get_last_key_press()
 
-        """
         Player can press multiple keys until it was the right key or current_y < -KAREL_SIZE -> delete current Karel
-        """
-        print(current_y)
+        If player pressed the right key, delete the moving Karel => Done
+        If player misses the whole moving_karel, delete moving Karel when Karel has reached the end of the word => Done
+
         if key_pressed: #Wait until keys were being pressed before checking the condition
             if press_right_key(key_pressed, right_key): 
-                delete_current_karel(canvas, moving_karel)
+                delete_object(canvas, moving_karel)
                 break
         #ultimate while loop stop condition even if the key was pressed or not
         if current_y < -KAREL_SIZE:
-            delete_current_karel(canvas, moving_karel)
+            delete_object(canvas, moving_karel)
             break
 
 
+    """
+
+    print_score_condition(canvas, PERFECT)
 
     print("Finish test")
 
 
 
-def press_right_key(key_pressed, right_key):
-    return key_pressed == right_key
 
 def static_draw(canvas):
     """
@@ -172,10 +179,37 @@ def which_moving_karel(x):
     if x == RIGHT_X:
         return 'd'
 
-def delete_current_karel(canvas, karel):
-    canvas.delete(karel)
-    canvas.canvas.redraw(karel) #make sure moving_karel is probably deleted
+def delete_object(canvas, obj):
+    canvas.delete(obj)
+    canvas.canvas.redraw(obj) #make sure the object is probably deleted
 
+def press_right_key(key_pressed, right_key):
+    return key_pressed == right_key
 
-if __name__ == '__main__':
-    main()
+def delete_after_delayed_time(canvas, obj):
+    """
+    Delete the text after the delayed time
+    """
+    time.sleep(TEXT_DELAY)
+    delete_object(canvas, obj)
+
+def generate_text(canvas, text_to_create, color):
+    text = canvas.create_text(
+        CONDITION_X,
+        CONDITION_Y,
+        text = text_to_create,
+        font = 'Calibri',
+        font_size = FONT_SIZE,
+        color = color
+    )
+    return text
+
+def print_score_condition (canvas, condition):
+    """
+    Generate different texts on the screen based on the text that got passed in
+    The text will appear in 0.3 seconds
+    """
+    if condition == PERFECT:
+        text = generate_text(canvas, PERFECT, 'turquoise')
+        delete_after_delayed_time(canvas, text)
+        
