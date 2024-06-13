@@ -15,7 +15,7 @@ OBJECTIVES:
         perfect += 1
     3. Print the text "perfect" on the screen whenever the condition is met
     
-    TODO: Print whatever the word was passed in the function print_score_condition
+    TODO: Handle "perfect" condition 
     
     CURRENT MILESTONE: Handle perfect condition
     
@@ -51,11 +51,10 @@ DELAY = 0.005
 PERFECT = 'perfect'
 GOOD = 'good'
 ALMOST_THERE = 'almost there'
-MISS = 'miss'
-FONT_SIZE = 65 
+MISS = 'miss :('
+FONT_SIZE = 60
 TEXT_DELAY = 0.3
-CONDITION_X = (CANVAS_WIDTH * 0.35)
-CONDITION_Y = (CANVAS_HEIGHT * 0.43)
+
 
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
@@ -102,7 +101,7 @@ def main():
 
     """
 
-    print_score_condition(canvas, PERFECT)
+    print_score_condition(canvas, GOOD)
 
     print("Finish test")
 
@@ -193,16 +192,49 @@ def delete_after_delayed_time(canvas, obj):
     time.sleep(TEXT_DELAY)
     delete_object(canvas, obj)
 
-def generate_text(canvas, text_to_create, color):
-    text = canvas.create_text(
-        CONDITION_X,
-        CONDITION_Y,
-        text = text_to_create,
+def generate_text_perfect(canvas):
+    perfect = canvas.create_text(
+        (CANVAS_WIDTH * 0.37),
+        (CANVAS_HEIGHT * 0.43),
+        text = PERFECT,
         font = 'Calibri',
         font_size = FONT_SIZE,
-        color = color
+        color = 'yellow'
     )
-    return text
+    return perfect
+
+def generate_text_good(canvas):
+    good = canvas.create_text(
+        (CANVAS_WIDTH * 0.4),
+        (CANVAS_HEIGHT * 0.43),
+        text = GOOD,
+        font = 'Calibri',
+        font_size = FONT_SIZE,
+        color = 'orange'
+    )
+    return good
+
+def generate_text_almostthere(canvas):
+    almostthere = canvas.create_text(
+        (CANVAS_WIDTH * 0.27),
+        (CANVAS_HEIGHT * 0.43),
+        text = ALMOST_THERE,
+        font = 'Calibri',
+        font_size = FONT_SIZE,
+        color = 'pink'
+    )
+    return almostthere
+
+def generate_text_miss(canvas):
+    miss = canvas.create_text(
+        (CANVAS_WIDTH * 0.38),
+        (CANVAS_HEIGHT * 0.43),
+        text = MISS,
+        font = 'Calibri',
+        font_size = FONT_SIZE,
+        color = 'turquoise'
+    )
+    return miss
 
 def print_score_condition (canvas, condition):
     """
@@ -210,6 +242,18 @@ def print_score_condition (canvas, condition):
     The text will appear in 0.3 seconds
     """
     if condition == PERFECT:
-        text = generate_text(canvas, PERFECT, 'turquoise')
-        delete_after_delayed_time(canvas, text)
-        
+        text = generate_text_perfect(canvas)
+        #delete_after_delayed_time(canvas)
+    elif condition == GOOD: 
+        text = generate_text_good(canvas)
+        #delete_after_delayed_time(canvas, text)
+    elif condition == ALMOST_THERE:
+        text = generate_text_almostthere(canvas)
+        #delete_after_delayed_time(canvas, text)
+    elif condition == MISS:
+        text = generate_text_miss(canvas)
+        #delete_after_delayed_time(canvas, text)
+
+
+if __name__ == '__main__':
+    main()
