@@ -15,7 +15,7 @@ OBJECTIVES:
         perfect += 1
     3. Print the text "perfect" on the screen whenever the condition is met
     
-    TODO: Handle "perfect" condition 
+    TODO: Handle conditions for the score range 
     
     CURRENT MILESTONE: Handle perfect condition
     
@@ -45,8 +45,13 @@ MOVING_Y = CANVAS_HEIGHT - KAREL_SIZE #Karel will move from bellow the screen (f
 
 VEL = 7
 
-DELAY = 0.005
+DELAY = 0.007
 
+
+#PERFECT score range in pixel: from left to right
+SCORE_GAP = int(KAREL_SIZE/3)
+PERFECT_LEFT = STATIC_Y - SCORE_GAP
+PERFECT_RIGHT = STATIC_Y + SCORE_GAP
 #The texts appear during counting the score
 PERFECT = 'perfect'
 GOOD = 'good'
@@ -73,7 +78,7 @@ def main():
     moving_karel = generate_moving_karel(canvas, current_x, current_y) 
     right_key = which_moving_karel(current_x)
 
-    """
+
     while True:
         #Animation
         current_y -= VEL
@@ -81,32 +86,62 @@ def main():
         time.sleep(DELAY)
 
 
-
         #handle key press
         key_pressed = canvas.get_last_key_press()
 
+        """
         Player can press multiple keys until it was the right key or current_y < -KAREL_SIZE -> delete current Karel
         If player pressed the right key, delete the moving Karel => Done
         If player misses the whole moving_karel, delete moving Karel when Karel has reached the end of the word => Done
-
+        """
         if key_pressed: #Wait until keys were being pressed before checking the condition
-            if press_right_key(key_pressed, right_key): 
+            print("current_y:", current_y, "vs STATIC_Y:", STATIC_Y) #for testing cases
+            #Handle the PERFECT score
+
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, PERFECT_LEFT, PERFECT_RIGHT):
+                print("Perfect Score: ", current_y)
                 delete_object(canvas, moving_karel)
+                print_score_condition(canvas, PERFECT)
                 break
-        #ultimate while loop stop condition even if the key was pressed or not
-        if current_y < -KAREL_SIZE:
+
+            #Handle the GOOD score
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, (PERFECT_LEFT + SCORE_GAP) , (PERFECT_RIGHT + SCORE_GAP) ):
+                print("Good Score: ", current_y)
+                delete_object(canvas, moving_karel)
+                print_score_condition(canvas, GOOD)
+                break
+
+            #Handle the ALMOST_THERE score
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, (PERFECT_LEFT + SCORE_GAP*3) , (PERFECT_RIGHT + SCORE_GAP*3) ):
+                print("Almost there Score: ", current_y)
+                delete_object(canvas, moving_karel)
+                print_score_condition(canvas, ALMOST_THERE)
+                break
+
+            #TODO: Another miss if player pressed the right key but too soon
+            #TODO2: Redefine the range of almost there
+
+        """
+        If moving Karel has surpassed static Karel 
+        and the last pressed key is still not right 
+        (even if the key wasn't pressed, the condition of press_right_key() would be automatically false at first)
+        -> print 'miss', delete moving karel
+        """
+        if current_y < -50 and ( press_right_key(key_pressed, right_key) == False ): #tested
             delete_object(canvas, moving_karel)
+            print_score_condition(canvas, MISS)
             break
-
-
-    """
-
-    print_score_condition(canvas, GOOD)
+   
+        
 
     print("Finish test")
 
 
 
+def was_in_range_of(y, range_left, range_right):
+    for pos in range (range_left, range_right):
+        if (y == pos):
+            return True
 
 def static_draw(canvas):
     """
@@ -243,16 +278,16 @@ def print_score_condition (canvas, condition):
     """
     if condition == PERFECT:
         text = generate_text_perfect(canvas)
-        #delete_after_delayed_time(canvas)
+        delete_after_delayed_time(canvas, text)
     elif condition == GOOD: 
         text = generate_text_good(canvas)
-        #delete_after_delayed_time(canvas, text)
+        delete_after_delayed_time(canvas, text)
     elif condition == ALMOST_THERE:
         text = generate_text_almostthere(canvas)
-        #delete_after_delayed_time(canvas, text)
+        delete_after_delayed_time(canvas, text)
     elif condition == MISS:
         text = generate_text_miss(canvas)
-        #delete_after_delayed_time(canvas, text)
+        delete_after_delayed_time(canvas, text)
 
 
 if __name__ == '__main__':
