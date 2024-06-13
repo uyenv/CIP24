@@ -1,17 +1,19 @@
 """
 This is just a plain source for me to look back on in case my laptop shuts down mid coding, further explanations 
 will be included whenever my project is finished
-This mini-game is called Karel Dance Audition where player will press AWSD to score your dance skills
-**I coded this on Stanford CIP IDE, so if you want to pull down and see the results on your IDE for example VSCode or Pycharm,
-you'll have to add something like 'canvas.update()' or 'canvas.mainloop' though. 
+This mini-game is called Karel Dance Audition where the player will press AWSD to score
+**I coded this on Stanford CIP IDE, so if you want to pull down and see the results on your IDE, for example, VSCode or Pycharm,
+you'll have to add something like 'canvas.update()' (every time an object was created) or 'canvas.mainloop' (in the end of the program). 
 """
+
 """
+OBJECTIVES:
     Score count Milestone - Score count system: 
     1. Create a score_count variable
     2. If the key was pressed in the range of 
         current_y = static_y or current_y = static_y +- 2px => perfect_score
         perfect += 1
-    3. Print the text "perfect" on screen whenever the condition is met
+    3. Print the text "perfect" on the screen whenever the condition is met
     
     TODO: Print Perfect whenever the condition is met 
     CURRENT MILESTONE: Handle perfect condition
