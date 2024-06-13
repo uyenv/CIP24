@@ -6,9 +6,9 @@ This mini-game is called Karel Dance Audition where player will press AWSD to sc
 you'll have to add something like 'canvas.update()' or 'canvas.mainloop' though. 
 """
 """
-    Bug: Animation khong chay
-    Bug: Handle key press chua hoan thanh
+    Bug: Handle key press chua hoan than
 """
+
 from graphics import Canvas
 import random
 import time
@@ -32,7 +32,7 @@ MOVING_Y = CANVAS_HEIGHT - KAREL_SIZE #Karel will move from bellow the screen (f
 
 VEL = 7
 
-DELAY = 1/(10**2)
+DELAY = 0.005
 
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
@@ -49,7 +49,7 @@ def main():
     #Examine which Karel was generated from the random method
     moving_karel = generate_moving_karel(canvas, current_x, current_y) 
     right_key = which_moving_karel(current_x)
-    karel_present = True 
+
 
     """
     - Make a method deciding if the pressed key was the right one
@@ -68,32 +68,32 @@ def main():
 
         #handle key press
         key_pressed = canvas.get_last_key_press()
-        check_right_key(key_pressed, right_key)
 
-    #Player can press multiple keys until it was the right key or until current_y < 0 
-    
-        while key_pressed != right_key:
-            #get new key press and check again
-            key_pressed = canvas.get_last_key_press()
-            if check_right_key:
+        if key_pressed:
+            if press_right_key(key_pressed, right_key): #tested - all good
+                canvas.delete(moving_karel)
+                canvas.canvas.redraw()
                 break
-            if (current_y < 0): #When moving_Karel is out of screen
-                if karel_present:
-                    canvas.delete(moving_karel)
-                    break
 
-        if karel_present:
-            canvas.delete(moving_karel)
-            return
+            """
+                I've just realized that if I don't write these lines
+                it would do just as the same : D my 6 hours
+            else:
+            #Player can press multiple keys until it was the right key 
+                while (press_right_key(key_pressed, right_key) == False):
+                    #get new key press and check again
+                    key_pressed = canvas.get_last_key_press()
+                    canvas.move(moving_karel, 0, -VEL)
+                    time.sleep(DELAY)
+                canvas.delete(moving_karel)
+                break
+            """
 
-    print("End game")
+    print("Finish test")
 
 
 
-
-
-
-def check_right_key(key_pressed, right_key):
+def press_right_key(key_pressed, right_key):
     return key_pressed == right_key
 
 def static_draw(canvas):
