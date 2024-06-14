@@ -8,19 +8,11 @@ you'll have to add something like 'canvas.update()' (every time an object was cr
 
 """
 OBJECTIVES:
-    Score count Milestone - Score count system: 
-    1. Create a score_count variable
-    2. If the key was pressed in the range of 
-        current_y = static_y or current_y = static_y +- 2px => perfect_score
-        perfect += 1
-    3. Print the text "perfect" on the screen whenever the condition is met
+    Score count Milestone - Score count system
     
-    TODO: Handle conditions for the score range 
+    CURRENT MILESTONE: Handle perfect condition => Done
     
-    CURRENT MILESTONE: Handle perfect condition
-    
-    Next's up:
-    Make a series of Karel randomly appear on the screen
+    TODO: Make a series of Karel randomly appear on the screen
 """
 from graphics import Canvas
 import random
@@ -49,9 +41,22 @@ DELAY = 0.007
 
 
 #PERFECT score range in pixel: from left to right
-SCORE_GAP = int(KAREL_SIZE/3)
-PERFECT_LEFT = STATIC_Y - SCORE_GAP
-PERFECT_RIGHT = STATIC_Y + SCORE_GAP
+"""
+For easier interpretation: 
+The y axist falls down, so the point from the top will 
+have a smaller value than the point from further down
+so the range will vary from top -> bottom
+"""
+#The range where player would have the perfect score
+PERFECT_TOP = STATIC_Y
+PERFECT_BOTTOM = STATIC_Y + int(KAREL_SIZE/3)
+
+GOOD_TOP = PERFECT_BOTTOM
+GOOD_BOTTOM = PERFECT_BOTTOM + int(KAREL_SIZE/2)
+
+ALMOST_THERE_TOP = GOOD_BOTTOM
+ALMOST_THERE_BOTTOM = int(CANVAS_HEIGHT/2)
+
 #The texts appear during counting the score
 PERFECT = 'perfect'
 GOOD = 'good'
@@ -85,7 +90,6 @@ def main():
         canvas.moveto(moving_karel, current_x, current_y)
         time.sleep(DELAY)
 
-
         #handle key press
         key_pressed = canvas.get_last_key_press()
 
@@ -97,37 +101,36 @@ def main():
         if key_pressed: #Wait until keys were being pressed before checking the condition
             print("current_y:", current_y, "vs STATIC_Y:", STATIC_Y) #for testing cases
             #Handle the PERFECT score
-
-            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, PERFECT_LEFT, PERFECT_RIGHT):
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, PERFECT_TOP, PERFECT_BOTTOM):
                 print("Perfect Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, PERFECT)
                 break
-
             #Handle the GOOD score
-            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, (PERFECT_LEFT + SCORE_GAP) , (PERFECT_RIGHT + SCORE_GAP) ):
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, GOOD_TOP, GOOD_BOTTOM ):
                 print("Good Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, GOOD)
                 break
-
             #Handle the ALMOST_THERE score
-            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, (PERFECT_LEFT + SCORE_GAP*3) , (PERFECT_RIGHT + SCORE_GAP*3) ):
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, ALMOST_THERE_TOP , ALMOST_THERE_BOTTOM ):
                 print("Almost there Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, ALMOST_THERE)
                 break
-
-            #TODO: Another miss if player pressed the right key but too soon
-            #TODO2: Redefine the range of almost there
-
+            #MISS if player pressed the right key but too soon
+            if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, ALMOST_THERE_BOTTOM, CANVAS_HEIGHT ):
+                print("Miss Score: ", current_y)
+                delete_object(canvas, moving_karel)
+                print_score_condition(canvas, MISS)
+                break
         """
         If moving Karel has surpassed static Karel 
         and the last pressed key is still not right 
         (even if the key wasn't pressed, the condition of press_right_key() would be automatically false at first)
         -> print 'miss', delete moving karel
         """
-        if current_y < -50 and ( press_right_key(key_pressed, right_key) == False ): #tested
+        if current_y < -50 and ( press_right_key(key_pressed, right_key) == False ): 
             delete_object(canvas, moving_karel)
             print_score_condition(canvas, MISS)
             break
