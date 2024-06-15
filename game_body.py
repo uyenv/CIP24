@@ -26,7 +26,6 @@ OBJECTIVES:
              resulting in the dictionary called score_dict to store the full wanted values
              with the key as each unique value and the key value as the score counts
 """
-#TODO: Finish Score Count System
 from graphics import Canvas
 import random
 import time
@@ -62,7 +61,7 @@ so the range will vary from top -> bottom
 """
 #The range where player would have the perfect score
 PERFECT_TOP = STATIC_Y
-PERFECT_BOTTOM = STATIC_Y + int(KAREL_SIZE/3)
+PERFECT_BOTTOM = STATIC_Y + int(KAREL_SIZE/5)
 
 GOOD_TOP = PERFECT_BOTTOM
 GOOD_BOTTOM = PERFECT_BOTTOM + int(KAREL_SIZE/2)
@@ -80,21 +79,25 @@ TEXT_DELAY = 0.3
 
 #A list to store the values that will be returned after game_on()
 score_lst = []
-
+#A dictionary to store score count
+score_dict = {'perfect': 0, 'good': 0, 'almost there': 0, 'miss :(': 0}
 
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     #draw static objects on the screen
     static_draw(canvas)
 
-    #TODO: GENERATE A SERIES OF 3 MOVING KARELS ONE BY ONE APPEAR ON THE SCREEN: => Finished
-    for i in range (3):
+    #GENERATE A SERIES OF 20 MOVING KARELS ONE BY ONE APPEAR ON THE SCREEN: => Finished
+    for i in range (20):
         score = game_on(canvas)
-        score_lst.append(score)
-    print("Finish test")
-    print("Here's a list of score: ", score_lst)
+        score_lst.append(score) #add the end result into the score list
 
+    """
+    THIS FUNCITON: calculate_total_score(score_dict) WILL BE IN THE END.PY SUBFILE INSTEAD
+    score_dict = count_score(score_lst) #count times each unique score appear (for End.py)
+    """
 
+    return score_dict
 
 
 def static_draw(canvas):
@@ -326,7 +329,23 @@ def game_on(canvas):
             print_score_condition(canvas, MISS)
             return MISS
 
+def count_score(score_lst):
+    for score in score_lst: #let index from score_lst run through
+        if score in score_dict.keys(): #count each time that score appear in score_lst
+            score_dict[score] += 1
+    return score_dict
+
+def calculate_total_score(score_dict):
+    res = 0
+    for score, times_appear in score_dict.items():
+        if score == PERFECT:
+            res += 100*times_appear
+        if score == GOOD:
+            res += 50*times_appear
+        if score == ALMOST_THERE:
+            res += 25*times_appear
+        #of course if you miss, there's no cake for you, sadly :(
+    return res
 
 if __name__ == '__main__':
     main()
-
