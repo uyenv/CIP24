@@ -14,8 +14,17 @@ OBJECTIVES:
     
     TODO: 
     1. Make a series of Karel randomly appear on the screen
+        1.1. Make the while True (animation loop) nested inside of the for loop
+        1.2. The begin and end conditions of the one_time_game loop. 
+            1.2.1. The helper function begins with what? => Canvas (parameter)
+            1.2.2. The helper function ends with what? => Return value = PERFECT, GOOD, ALMOST THERE or MISS,
+                    append the value into the list called score_lst
+                    
     2. Think about the way to implement the dictionary to store PERFECT, GOOD, ALMOST THERE and MISS scores.
-    
+     2.1. The value which is returned from one_time_game after each and every time the game begins
+     2.2. Make another helper function to count the times each unique value appeared on the screen,    
+             resulting in the dictionary called score_dict to store the full wanted values
+             with the key as each unique value and the key value as the score counts
 """
 from graphics import Canvas
 import random
