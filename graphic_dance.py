@@ -13,7 +13,7 @@ OBJECTIVES:
     CURRENT MILESTONE: Test one_time_game function, make sure it runs smoothly => Done
     
     TODO: 
-    1. Make a series of Karel randomly appear on the screen
+    1. Make a series of Karel randomly appear on the screen => Done
         1.1. Make the while True (animation loop) nested inside of the for loop
         1.2. The begin and end conditions of the one_time_game loop. 
             1.2.1. The helper function begins with what? => Canvas (parameter)
@@ -26,6 +26,7 @@ OBJECTIVES:
              resulting in the dictionary called score_dict to store the full wanted values
              with the key as each unique value and the key value as the score counts
 """
+#TODO: Finish Score Count System
 from graphics import Canvas
 import random
 import time
@@ -47,9 +48,9 @@ STATIC_Y = 20
 MOVING_Xs= [LEFT_X, UP_X, DOWN_X, RIGHT_X] 
 MOVING_Y = CANVAS_HEIGHT - KAREL_SIZE #Karel will move from bellow the screen (for natural purposes lol)
 
-VEL = 7
+VEL = 10
 
-DELAY = 0.007
+DELAY = 0.005
 
 
 #PERFECT score range in pixel: from left to right
@@ -77,15 +78,21 @@ MISS = 'miss :('
 FONT_SIZE = 60
 TEXT_DELAY = 0.3
 
+#A list to store the values that will be returned after game_on()
+score_lst = []
+
 
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
     #draw static objects on the screen
     static_draw(canvas)
 
-    #TODO: GENERATE A SERIES OF 3 MOVING KARELS ONE BY ONE APPEAR ON THE SCREEN:
-    one_time_game(canvas)
+    #TODO: GENERATE A SERIES OF 3 MOVING KARELS ONE BY ONE APPEAR ON THE SCREEN: => Finished
+    for i in range (3):
+        score = game_on(canvas)
+        score_lst.append(score)
     print("Finish test")
+    print("Here's a list of score: ", score_lst)
 
 
 
@@ -241,7 +248,7 @@ def was_in_range_of(y, range_left, range_right):
         if (y == pos):
             return True
 
-def one_time_game(canvas):
+def game_on(canvas):
     #generate a random moving Karel from bellow the screen
     """
     The conditions of generating a moving Karel don't depent on the Karel itself
@@ -281,8 +288,6 @@ def one_time_game(canvas):
         If player misses the whole moving_karel, delete moving Karel when Karel has reached the end of the word => Done
         """
 
-        """
-        COMMENTED FOR TESTING
         if key_pressed: #Wait until keys were being pressed before checking the condition
             print("current_y:", current_y, "vs STATIC_Y:", STATIC_Y) #for testing cases
             #Handle the PERFECT score
@@ -290,28 +295,25 @@ def one_time_game(canvas):
                 print("Perfect Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, PERFECT)
-                break
+                return PERFECT
             #Handle the GOOD score
             if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, GOOD_TOP, GOOD_BOTTOM ):
                 print("Good Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, GOOD)
-                break
+                return GOOD
             #Handle the ALMOST_THERE score
             if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, ALMOST_THERE_TOP , ALMOST_THERE_BOTTOM ):
                 print("Almost there Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, ALMOST_THERE)
-                break
+                return ALMOST_THERE
             #MISS if player pressed the right key but too soon
             if press_right_key(key_pressed, right_key) and was_in_range_of(current_y, ALMOST_THERE_BOTTOM, CANVAS_HEIGHT ):
                 print("Miss Score: ", current_y)
                 delete_object(canvas, moving_karel)
                 print_score_condition(canvas, MISS)
-                break
-
-            """
-
+                return MISS
 
         """
         If moving Karel has surpassed static Karel 
@@ -322,7 +324,7 @@ def one_time_game(canvas):
         if current_y < -50 and ( press_right_key(key_pressed, right_key) == False ): 
             delete_object(canvas, moving_karel)
             print_score_condition(canvas, MISS)
-            break
+            return MISS
 
 
 if __name__ == '__main__':
