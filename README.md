@@ -13,4 +13,3 @@ Those would include:
 
 - "#" will be used to set a milestone or also a piece of code (if it was just for a smol line in one use)
 
-  I hope it sounds clear enough lmao
