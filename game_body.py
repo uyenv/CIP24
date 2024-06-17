@@ -92,10 +92,7 @@ def main():
         score = game_on(canvas)
         score_lst.append(score) #add the end result into the score list
 
-    """
-    THIS FUNCITON: calculate_total_score(score_dict) WILL BE IN THE END.PY SUBFILE INSTEAD
     score_dict = count_score(score_lst) #count times each unique score appear (for End.py)
-    """
 
     return score_dict
 
@@ -108,7 +105,7 @@ def static_draw(canvas):
     wallpaper = canvas.create_image_with_size(
         0, 0,
         CANVAS_WIDTH, CANVAS_HEIGHT,
-        'darkPinkPurple.jpg'
+        'body_wall.jpg'
     )
 
     #import static Karels
@@ -334,18 +331,6 @@ def count_score(score_lst):
         if score in score_dict.keys(): #count each time that score appear in score_lst
             score_dict[score] += 1
     return score_dict
-
-def calculate_total_score(score_dict):
-    res = 0
-    for score, times_appear in score_dict.items():
-        if score == PERFECT:
-            res += 100*times_appear
-        if score == GOOD:
-            res += 50*times_appear
-        if score == ALMOST_THERE:
-            res += 25*times_appear
-        #of course if you miss, there's no cake for you, sadly :(
-    return res
 
 if __name__ == '__main__':
     main()
